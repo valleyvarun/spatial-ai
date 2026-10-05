@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0b0b" />
+    <title>Spatial AI — ARCH6956A</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+      defer
+    ></script>
+    <script src="script.js" defer></script>
+    <script src="drawing.js" defer></script>
+    <script src="supabase.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-group header-group--left">
+        <span class="header-label">GSAPP</span>
+        <span class="header-detail">Columbia University</span>
+      </div>
+
+      <div class="header-group header-group--center">
+        <h1>Spatial AI</h1>
+        <span class="header-detail">ARCH6956A . Fall 2026</span>
+      </div>
+
+      <div class="header-group header-group--right">
+        <span class="header-label">Varun SA</span>
+        <span class="header-detail">MS CDP</span>
+      </div>
+    </header>
+
+    <main class="site-body">
+      <div class="course-overview">
+        <p class="completion" id="completion" aria-live="polite">0 %</p>
+
+        <section class="resource-grid" aria-label="Course resources">
+          <article class="resource-card">
+            <h2>Workshops</h2>
+            <ul class="session-list" data-resource="Workshops"></ul>
+          </article>
+
+          <article class="resource-card">
+            <h2>Assignments</h2>
+            <ul class="session-list" data-resource="Assignments"></ul>
+          </article>
+
+          <article class="resource-card">
+            <h2>Readings</h2>
+            <ul class="session-list" data-resource="Readings"></ul>
+          </article>
+        </section>
+      </div>
+    </main>
+
+    <canvas
+      class="drawing-canvas"
+      id="drawing-canvas"
+      aria-hidden="true"
+    ></canvas>
+
+    <div class="drawing-tools" aria-label="Drawing tools">
+      <button
+        class="drawing-tool-button"
+        id="draw-toggle"
+        type="button"
+        aria-controls="drawing-canvas"
+        aria-pressed="false"
+      >
+        Draw
+      </button>
+      <button class="drawing-tool-button" id="clear-drawing" type="button">
+        Clear
+      </button>
+    </div>
+
+    <div class="auth-controls" aria-label="Account controls">
+      <span class="access-status" id="access-status" aria-live="polite">
+        Connecting
+      </span>
+      <button class="auth-action" id="auth-action" type="button">
+        Owner login
+      </button>
+    </div>
+
+    <dialog
+      class="auth-dialog"
+      id="auth-dialog"
+      aria-labelledby="auth-dialog-title"
+    >
+      <form class="auth-form" id="auth-form">
+        <div class="auth-form__heading">
+          <h2 id="auth-dialog-title">Owner login</h2>
+          <p>Sign in to edit course progress.</p>
+        </div>
+
+        <label class="auth-field">
+          <span>Email</span>
+          <input
+            id="auth-email"
+            name="email"
+            type="email"
+            autocomplete="username"
+            required
+          />
+        </label>
+
+        <label class="auth-field">
+          <span>Password</span>
+          <input
+            id="auth-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+        </label>
+
+        <p class="auth-message" id="auth-message" role="alert"></p>
+
+        <div class="auth-form__actions">
+          <button id="auth-cancel" type="button">Cancel</button>
+          <button id="auth-submit" type="submit">Sign in</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>
