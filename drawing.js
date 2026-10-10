@@ -16,7 +16,9 @@ function getDocumentSize() {
   const root = document.documentElement;
   const pageElements = [...document.body.children].filter(
     (element) =>
-      element !== drawingCanvas && !element.classList.contains("drawing-tools"),
+      element !== drawingCanvas &&
+      !element.classList.contains("drawing-tools") &&
+      !element.classList.contains("site-footer"),
   );
   const elementBounds = pageElements.map((element) =>
     element.getBoundingClientRect(),

@@ -1,6 +1,5 @@
 const page = document.documentElement;
 const siteHeader = document.querySelector(".site-header");
-const siteBody = document.querySelector(".site-body");
 const progressPanel = document.querySelector(".progress-panel");
 const courseRows = document.querySelector("#course-rows");
 const completionPercent = document.querySelector("#completion-percent");
@@ -125,6 +124,7 @@ function updateViewportType() {
   }
 
   page.dataset.viewport = viewportType;
+  positionCompletion();
 }
 
 updateViewportType();
@@ -165,17 +165,44 @@ function isCountableCheckbox(checkbox) {
   );
 }
 
+function isPinnedChromeViewport() {
+  return (
+    page.dataset.viewport === "portrait" || page.dataset.viewport === "mobile"
+  );
+}
+
+function getPercentPadding() {
+  const value = Number.parseFloat(
+    getComputedStyle(page).getPropertyValue("--percent-padding"),
+  );
+
+  return Number.isFinite(value) ? value : 12;
+}
+
 function positionCompletion() {
-  if (!completionPercent || !progressPanel || !siteHeader || !siteBody) {
+  if (!completionPercent || !progressPanel || !siteHeader) {
     return;
   }
 
-  const headerBottom = siteHeader.getBoundingClientRect().bottom;
-  const tableTop = progressPanel.getBoundingClientRect().top;
-  const bodyTop = siteBody.getBoundingClientRect().top;
-  const midpoint = (headerBottom + tableTop) / 2 - bodyTop;
+  if (isPinnedChromeViewport()) {
+    completionPercent.style.removeProperty("top");
+    return;
+  }
 
-  completionPercent.style.top = `${Math.max(midpoint, 0)}px`;
+  const padding = getPercentPadding();
+  const headerBottom =
+    siteHeader.getBoundingClientRect().bottom + window.scrollY;
+  const tableTop = progressPanel.getBoundingClientRect().top + window.scrollY;
+  const percentHeight = completionPercent.offsetHeight || 40;
+  const midpoint = (headerBottom + tableTop) / 2;
+  const minTop = headerBottom + padding + percentHeight / 2;
+  const maxTop = tableTop - padding - percentHeight / 2;
+  const top =
+    maxTop >= minTop
+      ? Math.min(Math.max(midpoint, minTop), maxTop)
+      : minTop;
+
+  completionPercent.style.top = `${Math.max(top, 0)}px`;
 }
 
 function updateCompletion() {

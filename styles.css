@@ -10,6 +10,9 @@
   --title-size: 22px;
   --label-size: 15px;
   --detail-size: 13px;
+  --percent-padding: 12px;
+  --percent-line: clamp(26px, 3.2vw, 40px);
+  --percent-band: calc(var(--percent-padding) * 2 + var(--percent-line));
 }
 
 * {
@@ -22,6 +25,7 @@ body {
 }
 
 body {
+  position: relative;
   margin: 0;
   background: var(--page-background);
   color: var(--primary-text);
@@ -93,16 +97,18 @@ body {
   min-height: calc(100vh - var(--header-height));
   min-height: calc(100dvh - var(--header-height));
   padding: clamp(24px, 3vw, 48px) clamp(84px, 7vw, 104px);
+  padding-top: max(clamp(24px, 3vw, 48px), var(--percent-band));
+  padding-bottom: max(clamp(24px, 3vw, 48px), var(--percent-band));
 }
 
 .completion-percent {
   position: absolute;
-  top: 0;
+  top: calc(var(--header-height) + var(--percent-padding) + (var(--percent-line) / 2));
   left: 50%;
-  z-index: 2;
+  z-index: 1090;
   margin: 0;
   color: #d3d3d3;
-  font-size: clamp(26px, 3.2vw, 40px);
+  font-size: var(--percent-line);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
   letter-spacing: -0.04em;
@@ -110,6 +116,10 @@ body {
   pointer-events: none;
   transform: translate(-50%, -50%);
   transition: color 220ms ease;
+}
+
+.site-footer {
+  display: contents;
 }
 
 .course-overview {
@@ -736,6 +746,7 @@ body {
 @media (max-width: 700px) {
   .site-body {
     padding: 24px 14px 88px;
+    padding-top: max(24px, var(--percent-band));
   }
 
   .progress-panel {
@@ -746,6 +757,7 @@ body {
 @media (max-width: 360px) {
   .site-body {
     padding: 18px 9px 82px;
+    padding-top: max(18px, var(--percent-band));
   }
 
   .progress-row {
@@ -1011,7 +1023,7 @@ html.drawing-active .drawing-canvas {
 }
 
 @media (max-width: 700px) {
-  .drawing-tools {
+  html:not([data-viewport="portrait"]):not([data-viewport="mobile"]) .drawing-tools {
     top: auto;
     bottom: 12px;
     left: 12px;
@@ -1019,11 +1031,115 @@ html.drawing-active .drawing-canvas {
     transform: none;
   }
 
-  .auth-controls {
+  html:not([data-viewport="portrait"]):not([data-viewport="mobile"]) .auth-controls {
     top: auto;
     right: 12px;
     bottom: 12px;
     transform: none;
+  }
+}
+
+html[data-viewport="portrait"],
+html[data-viewport="mobile"] {
+  --footer-height: calc(62px + env(safe-area-inset-bottom, 0px));
+  --percent-line: 32px;
+  height: 100%;
+  overflow: hidden;
+}
+
+html[data-viewport="portrait"] body,
+html[data-viewport="mobile"] body {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+html[data-viewport="portrait"] .site-header,
+html[data-viewport="mobile"] .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  flex-shrink: 0;
+  background: var(--page-background);
+}
+
+html[data-viewport="portrait"] .completion-percent,
+html[data-viewport="mobile"] .completion-percent {
+  position: relative;
+  top: auto;
+  left: auto;
+  z-index: 1090;
+  flex-shrink: 0;
+  padding: var(--percent-padding) 16px;
+  font-size: var(--percent-line);
+  line-height: 1;
+  text-align: center;
+  background: var(--page-background);
+  transform: none;
+}
+
+html[data-viewport="portrait"] .site-body,
+html[data-viewport="mobile"] .site-body {
+  display: block;
+  min-height: 0;
+  flex: 1 1 auto;
+  padding: 0 16px 16px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+html[data-viewport="portrait"] .course-overview,
+html[data-viewport="mobile"] .course-overview {
+  margin: 0 auto;
+}
+
+html[data-viewport="portrait"] .site-footer,
+html[data-viewport="mobile"] .site-footer {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  height: var(--footer-height);
+  padding: 0 12px env(safe-area-inset-bottom, 0px);
+  background: var(--page-background);
+  border-top: 1px solid var(--rule);
+}
+
+html[data-viewport="portrait"] .drawing-tools,
+html[data-viewport="portrait"] .auth-controls,
+html[data-viewport="mobile"] .drawing-tools,
+html[data-viewport="mobile"] .auth-controls {
+  position: static;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  width: auto;
+  flex-direction: row;
+  align-items: center;
+  transform: none;
+}
+
+html[data-viewport="portrait"] .access-status,
+html[data-viewport="mobile"] .access-status {
+  max-width: 70px;
+}
+
+@media (max-width: 400px) {
+  html[data-viewport="portrait"] .access-status,
+  html[data-viewport="mobile"] .access-status {
+    display: none;
+  }
+
+  html[data-viewport="portrait"] .drawing-tool-button,
+  html[data-viewport="portrait"] .auth-action,
+  html[data-viewport="mobile"] .drawing-tool-button,
+  html[data-viewport="mobile"] .auth-action {
+    width: 52px;
+    padding: 0 6px;
   }
 }
 
