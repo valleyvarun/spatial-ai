@@ -33,24 +33,43 @@
     </header>
 
     <main class="site-body">
+      <p
+        class="completion-percent"
+        id="completion-percent"
+        aria-live="polite"
+      >
+        0%
+      </p>
       <div class="course-overview">
-        <p class="completion" id="completion" aria-live="polite">0 %</p>
+        <section
+          class="progress-panel"
+          aria-label="Course progress"
+          aria-busy="true"
+        >
+          <div class="progress-table" role="table" aria-label="Course progress">
+            <div class="progress-table__header" role="row">
+              <span role="columnheader">
+                <span class="header-title">Session</span>
+                <span class="column-ratio" data-ratio-column="attendance">0/0</span>
+              </span>
+              <span role="columnheader">
+                <span class="header-title">Workshops</span>
+                <span class="column-ratio" data-ratio-column="workshops">0/0</span>
+              </span>
+              <span role="columnheader">
+                <span class="header-title">Assignments</span>
+                <span class="column-ratio" data-ratio-column="assignments">0/0</span>
+              </span>
+              <span role="columnheader">
+                <span class="header-title">Readings</span>
+                <span class="column-ratio" data-ratio-column="readings">0/0</span>
+              </span>
+            </div>
 
-        <section class="resource-grid" aria-label="Course resources">
-          <article class="resource-card">
-            <h2>Workshops</h2>
-            <ul class="session-list" data-resource="Workshops"></ul>
-          </article>
-
-          <article class="resource-card">
-            <h2>Assignments</h2>
-            <ul class="session-list" data-resource="Assignments"></ul>
-          </article>
-
-          <article class="resource-card">
-            <h2>Readings</h2>
-            <ul class="session-list" data-resource="Readings"></ul>
-          </article>
+            <div class="progress-table__body" id="course-rows" role="rowgroup">
+              <p class="progress-table__message">Loading course data</p>
+            </div>
+          </div>
         </section>
       </div>
     </main>
@@ -82,6 +101,15 @@
       </span>
       <button class="auth-action" id="auth-action" type="button">
         Owner login
+      </button>
+      <button
+        class="auth-action edit-toggle"
+        id="edit-toggle"
+        type="button"
+        hidden
+        aria-pressed="false"
+      >
+        Edit
       </button>
     </div>
 
@@ -123,6 +151,57 @@
         <div class="auth-form__actions">
           <button id="auth-cancel" type="button">Cancel</button>
           <button id="auth-submit" type="submit">Sign in</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog
+      class="auth-dialog link-dialog"
+      id="link-dialog"
+      aria-labelledby="link-dialog-title"
+    >
+      <form class="auth-form" id="link-form">
+        <div class="auth-form__heading">
+          <h2 id="link-dialog-title">Add link</h2>
+          <p>Paste the URL, then submit.</p>
+        </div>
+
+        <label class="auth-field">
+          <span>Link</span>
+          <input
+            id="link-input"
+            name="link"
+            type="text"
+            inputmode="url"
+            autocomplete="off"
+            placeholder="https://"
+            required
+          />
+        </label>
+
+        <p class="auth-message" id="link-message" role="alert"></p>
+
+        <div class="auth-form__actions">
+          <button id="link-cancel" type="button">Cancel</button>
+          <button id="link-submit" type="submit">Submit</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog
+      class="auth-dialog"
+      id="link-delete-dialog"
+      aria-labelledby="link-delete-title"
+    >
+      <form class="auth-form" id="link-delete-form">
+        <div class="auth-form__heading">
+          <h2 id="link-delete-title">Delete link?</h2>
+          <p>This will remove the saved link.</p>
+        </div>
+
+        <div class="auth-form__actions">
+          <button id="link-delete-cancel" type="button">Cancel</button>
+          <button id="link-delete-confirm" type="submit">Delete</button>
         </div>
       </form>
     </dialog>
